@@ -8,14 +8,14 @@
      title: "Tahfidz Al-Quran",
      description: "Program hafalan Al-Quran 30 juz dengan metode modern dan bimbingan intensif dari para hafidz.",
      duration: "3 Tahun",
-     color: "from-emerald-dark to-primary",
+    color: "from-blue-dark to-primary",
    },
    {
      icon: Cpu,
      title: "AI & Technology",
      description: "Pembelajaran teknologi kecerdasan buatan, coding, dan digital literacy untuk era modern.",
      duration: "2 Tahun",
-     color: "from-primary to-emerald-light",
+    color: "from-primary to-blue-light",
    },
    {
      icon: GraduationCap,

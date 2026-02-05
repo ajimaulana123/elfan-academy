@@ -14,15 +14,44 @@
  const Navbar = () => {
    const [isScrolled, setIsScrolled] = useState(false);
    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("beranda");
  
    useEffect(() => {
      const handleScroll = () => {
        setIsScrolled(window.scrollY > 50);
+      
+      // Determine active section
+      const sections = navLinks.map(link => link.href.substring(1));
+      for (const section of sections.reverse()) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 150) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
      };
      window.addEventListener("scroll", handleScroll);
      return () => window.removeEventListener("scroll", handleScroll);
    }, []);
  
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.substring(1);
+    const element = document.getElementById(targetId);
+    if (element) {
+      const offsetTop = element.offsetTop - 80;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth"
+      });
+      setActiveSection(targetId);
+    }
+    setIsMobileMenuOpen(false);
+  };
+
    return (
      <nav
        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -51,11 +80,27 @@
              <a
                key={link.name}
                href={link.href}
-               className={`text-sm font-medium transition-colors hover:text-secondary ${
-                 isScrolled ? "text-foreground" : "text-primary-foreground"
+              onClick={(e) => handleNavClick(e, link.href)}
+              className={`relative text-sm font-medium transition-colors hover:text-secondary ${
+                isScrolled 
+                  ? activeSection === link.href.substring(1)
+                    ? "text-primary"
+                    : "text-foreground"
+                  : activeSection === link.href.substring(1)
+                    ? "text-secondary"
+                    : "text-primary-foreground"
                }`}
              >
                {link.name}
+              {activeSection === link.href.substring(1) && (
+                <motion.span
+                  layoutId="activeNav"
+                  className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
+                    isScrolled ? "bg-primary" : "bg-secondary"
+                  }`}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
              </a>
            ))}
            <Button variant={isScrolled ? "default" : "hero"} size="lg">
@@ -88,8 +133,12 @@
                  <a
                    key={link.name}
                    href={link.href}
-                   className="text-foreground font-medium py-2"
-                   onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className={`font-medium py-2 transition-colors ${
+                    activeSection === link.href.substring(1)
+                      ? "text-primary"
+                      : "text-foreground"
+                  }`}
                  >
                    {link.name}
                  </a>
