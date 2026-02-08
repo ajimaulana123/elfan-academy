@@ -223,7 +223,9 @@ const Navbar = () => {
               ))}
 
               <Button variant="default" size="lg" className="w-full">
-                Daftar Sekarang
+                <a href="https://elfan-academy-form-ppdb.vercel.app" target="_blank">
+                  Daftar Sekarang
+                </a>
               </Button>
             </div>
           </motion.div>
