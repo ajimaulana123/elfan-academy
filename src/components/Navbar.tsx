@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
@@ -14,7 +14,7 @@ const navLinks = [
   { name: "Kontak", href: "/#kontak", isRoute: false },
 ];
 
-const Navbar = () => {
+const Navbar = forwardRef<HTMLElement>((_, ref) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -101,6 +101,7 @@ const Navbar = () => {
 
   return (
     <nav
+      ref={ref}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? "bg-background/95 backdrop-blur-md shadow-soft py-3"
@@ -203,6 +204,8 @@ const Navbar = () => {
       </AnimatePresence>
     </nav>
   );
-};
+});
+
+Navbar.displayName = "Navbar";
 
 export default Navbar;
