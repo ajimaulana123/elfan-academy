@@ -1,10 +1,17 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
-const navLinks = [
+import { Button } from "@/components/ui/button";
+
+type NavLinkItem = {
+  name: string;
+  href: string;
+  isRoute: boolean;
+};
+
+const navLinks: NavLinkItem[] = [
   { name: "Beranda", href: "/", isRoute: true },
   { name: "Profile", href: "/profile", isRoute: true },
   { name: "Sejarah", href: "/sejarah", isRoute: true },
@@ -14,38 +21,49 @@ const navLinks = [
   { name: "Kontak", href: "/#kontak", isRoute: false },
 ];
 
+function scrollToSectionId(sectionId: string, offset = 80) {
+  const element = document.getElementById(sectionId);
+  if (!element) return false;
+  const offsetTop = element.offsetTop - offset;
+  window.scrollTo({ top: offsetTop, behavior: "smooth" });
+  return true;
+}
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState<string>("");
+
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-      
-      // Only track sections on home page
-      if (location.pathname === "/") {
-        const sections = ["beranda", "tentang", "program", "kontak"];
-        for (const section of sections.reverse()) {
-          const element = document.getElementById(section);
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            if (rect.top <= 150) {
-              setActiveSection(section);
-              break;
-            }
-          }
+
+      if (location.pathname !== "/") return;
+
+      const sections = ["beranda", "tentang", "program", "kontak"];
+      // cari dari bawah ke atas agar section yang paling "terakhir" terlihat jadi aktif
+      for (const section of [...sections].reverse()) {
+        const element = document.getElementById(section);
+        if (!element) continue;
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= 150) {
+          setActiveSection(section);
+          return;
         }
       }
+
+      setActiveSection("beranda");
     };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Check on mount
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, [location.pathname]);
 
-  // Set active based on current route
+  // active state untuk route page
   useEffect(() => {
     if (location.pathname !== "/") {
       setActiveSection(location.pathname);
@@ -54,69 +72,66 @@ const Navbar = () => {
     }
   }, [location.pathname]);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: typeof navLinks[0]) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: NavLinkItem) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
 
     if (link.isRoute) {
       navigate(link.href);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      // Handle hash links (sections on home page)
-      const [path, hash] = link.href.split("#");
-      
-      if (location.pathname !== "/") {
-        // Navigate to home first, then scroll to section
-        navigate("/");
-        setTimeout(() => {
-          const element = document.getElementById(hash);
-          if (element) {
-            const offsetTop = element.offsetTop - 80;
-            window.scrollTo({ top: offsetTop, behavior: "smooth" });
-          }
-        }, 100);
-      } else {
-        // Already on home, just scroll
-        const element = document.getElementById(hash);
-        if (element) {
-          const offsetTop = element.offsetTop - 80;
-          window.scrollTo({ top: offsetTop, behavior: "smooth" });
-        }
-      }
+      return;
     }
+
+    const hash = link.href.split("#")[1];
+    if (!hash) return;
+
+    if (location.pathname !== "/") {
+      navigate("/");
+
+      // tunggu sampai home render, lalu scroll
+      const start = performance.now();
+      const tryScroll = () => {
+        if (scrollToSectionId(hash)) return;
+        if (performance.now() - start > 2000) return;
+        requestAnimationFrame(tryScroll);
+      };
+      requestAnimationFrame(tryScroll);
+      return;
+    }
+
+    scrollToSectionId(hash);
   };
 
-  const isActive = (link: typeof navLinks[0]) => {
+  const isActive = (link: NavLinkItem) => {
     if (link.isRoute) {
       if (link.href === "/") {
         return location.pathname === "/" && (activeSection === "beranda" || activeSection === "");
       }
       return location.pathname === link.href;
-    } else {
-      // Hash link - check if we're on home page and at that section
-      const hash = link.href.split("#")[1];
-      return location.pathname === "/" && activeSection === hash;
     }
+
+    const hash = link.href.split("#")[1];
+    return location.pathname === "/" && activeSection === hash;
   };
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-soft py-3"
-          : "bg-transparent py-5"
+        isScrolled ? "bg-background/95 backdrop-blur-md shadow-soft py-3" : "bg-transparent py-5"
       }`}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
-        <a 
-          href="/" 
+        <a
+          href="/"
           onClick={(e) => handleNavClick(e, { name: "Beranda", href: "/", isRoute: true })}
           className="flex items-center gap-3"
         >
-          <div className={`w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-xl transition-colors ${
-            isScrolled ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
-          }`}>
+          <div
+            className={`w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-xl transition-colors ${
+              isScrolled ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
+            }`}
+          >
             EA
           </div>
           <div className={`transition-colors ${isScrolled ? "text-foreground" : "text-primary-foreground"}`}>
@@ -133,7 +148,7 @@ const Navbar = () => {
               href={link.href}
               onClick={(e) => handleNavClick(e, link)}
               className={`relative text-sm font-medium transition-colors hover:text-secondary ${
-                isScrolled 
+                isScrolled
                   ? isActive(link)
                     ? "text-primary"
                     : "text-foreground"
@@ -154,6 +169,7 @@ const Navbar = () => {
               )}
             </a>
           ))}
+
           <Button variant={isScrolled ? "default" : "hero"} size="lg">
             Daftar Sekarang
           </Button>
@@ -164,7 +180,8 @@ const Navbar = () => {
           className={`lg:hidden p-2 rounded-lg transition-colors ${
             isScrolled ? "text-foreground" : "text-primary-foreground"
           }`}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={() => setIsMobileMenuOpen((v) => !v)}
+          aria-label={isMobileMenuOpen ? "Tutup menu" : "Buka menu"}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -185,15 +202,12 @@ const Navbar = () => {
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link)}
-                  className={`font-medium py-2 transition-colors ${
-                    isActive(link)
-                      ? "text-primary"
-                      : "text-foreground"
-                  }`}
+                  className={`font-medium py-2 transition-colors ${isActive(link) ? "text-primary" : "text-foreground"}`}
                 >
                   {link.name}
                 </a>
               ))}
+
               <Button variant="default" size="lg" className="w-full">
                 Daftar Sekarang
               </Button>
