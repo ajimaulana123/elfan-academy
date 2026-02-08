@@ -183,7 +183,9 @@ const Navbar = () => {
           ))}
 
           <Button variant={isScrolled ? "default" : "hero"} size="lg">
-            Daftar Sekarang
+            <a href="https://elfan-academy-form-ppdb.vercel.app">
+              Daftar Sekarang
+            </a>
           </Button>
         </div>
 
