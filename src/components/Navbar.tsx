@@ -9,6 +9,7 @@ type NavLinkItem = {
   name: string;
   href: string;
   isRoute: boolean;
+  homeSection?: string; // If set, scroll to this section when on home page
 };
 
 const navLinks: NavLinkItem[] = [
@@ -18,7 +19,7 @@ const navLinks: NavLinkItem[] = [
   { name: "Visi Misi", href: "/#tentang", isRoute: false },
   { name: "Tujuan", href: "/tujuan", isRoute: true },
   { name: "Program", href: "/#program", isRoute: false },
-  { name: "Kontak", href: "/#kontak", isRoute: false },
+  { name: "Kontak", href: "/kontak", isRoute: true, homeSection: "kontak" },
 ];
 
 function scrollToSectionId(sectionId: string, offset = 80) {
@@ -76,6 +77,12 @@ const Navbar = () => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
 
+    // Special case: link has homeSection and we're on home page -> scroll to section
+    if (link.homeSection && location.pathname === "/") {
+      scrollToSectionId(link.homeSection);
+      return;
+    }
+
     if (link.isRoute) {
       navigate(link.href);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -103,6 +110,11 @@ const Navbar = () => {
   };
 
   const isActive = (link: NavLinkItem) => {
+    // Special case: link with homeSection is active when scrolled to that section on home
+    if (link.homeSection && location.pathname === "/") {
+      return activeSection === link.homeSection;
+    }
+
     if (link.isRoute) {
       if (link.href === "/") {
         return location.pathname === "/" && (activeSection === "beranda" || activeSection === "");
