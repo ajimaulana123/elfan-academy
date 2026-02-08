@@ -14,11 +14,11 @@ type NavLinkItem = {
 
 const navLinks: NavLinkItem[] = [
   { name: "Beranda", href: "/", isRoute: true },
+  { name: "Visi Misi", href: "/#tentang", isRoute: false },
+  { name: "Program", href: "/#program", isRoute: false },
   { name: "Profile", href: "/profile", isRoute: true },
   { name: "Sejarah", href: "/sejarah", isRoute: true },
-  { name: "Visi Misi", href: "/#tentang", isRoute: false },
   { name: "Tujuan", href: "/tujuan", isRoute: true },
-  { name: "Program", href: "/#program", isRoute: false },
   { name: "Kontak", href: "/kontak", isRoute: true },
 ];
 
