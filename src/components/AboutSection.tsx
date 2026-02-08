@@ -44,43 +44,47 @@
                Tentang Kami
              </span>
              
-             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
-               Visi & Misi{" "}
-               <span className="gold-shimmer">Elfan AI Academy</span>
-             </h2>
-             
-             <div className="space-y-6 text-muted-foreground">
-               <div>
-                 <h3 className="font-display text-xl font-semibold text-foreground mb-2">Visi</h3>
-                 <p className="leading-relaxed">
-                   Menjadi lembaga pendidikan Islam terkemuka yang mengintegrasikan nilai-nilai 
-                   keislaman dengan teknologi kecerdasan buatan untuk membentuk generasi muslim 
-                   yang berakhlak mulia, cerdas, dan berdaya saing global.
-                 </p>
-               </div>
-               
-               <div>
-                 <h3 className="font-display text-xl font-semibold text-foreground mb-2">Misi</h3>
-                 <ul className="space-y-2">
-                   <li className="flex items-start gap-2">
-                     <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-2 flex-shrink-0" />
-                     Menyelenggarakan pendidikan berbasis Al-Quran dan Sunnah
-                   </li>
-                   <li className="flex items-start gap-2">
-                     <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-2 flex-shrink-0" />
-                     Mengembangkan kurikulum yang mengintegrasikan teknologi AI
-                   </li>
-                   <li className="flex items-start gap-2">
-                     <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-2 flex-shrink-0" />
-                     Membangun karakter santri yang berakhlak karimah
-                   </li>
-                   <li className="flex items-start gap-2">
-                     <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-2 flex-shrink-0" />
-                     Menyiapkan lulusan yang kompetitif di era digital
-                   </li>
-                 </ul>
-               </div>
-             </div>
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
+                Visi & Misi{" "}
+                <span className="gold-shimmer">Elfan AI Academy</span>
+              </h2>
+              
+              <div className="space-y-6 text-muted-foreground">
+                <div>
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-2">Visi</h3>
+                  <p className="leading-relaxed">
+                    Menjadi pendidikan vokasi terdepan dalam mencetak individu yang beradab, 
+                    kompeten di bidang teknologi dan mampu menciptakan inovasi digital, 
+                    berjiwa entrepreneurship, berkontribusi bagi masyarakat lokal dan global.
+                  </p>
+                </div>
+                
+                <div>
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-2">Misi</h3>
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-2 flex-shrink-0" />
+                      Mengintegrasikan nilai-nilai adab Islam secara mendalam di setiap aspek pembelajaran
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-2 flex-shrink-0" />
+                      Menyelenggarakan kurikulum berbasis AI yang relevan dengan kebutuhan industri digital di bidang Desain Multimedia, Broadcasting, dan Data Analyst
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-2 flex-shrink-0" />
+                      Menumbuhkan pola pikir dan jiwa entrepreneurship melalui pembelajaran praktik dan pemanfaatan AI dalam pengembangan ide dan analisis bisnis
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-2 flex-shrink-0" />
+                      Mengembangkan ekosistem pembelajaran yang adaptif, efisien, berbasis teknologi AI
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-secondary mt-2 flex-shrink-0" />
+                      Mencetak lulusan yang mandiri, inovatif, dan mampu menciptakan lapangan kerja bagi diri dan orang lain
+                    </li>
+                  </ul>
+                </div>
+              </div>
            </motion.div>
  
            {/* Right - Feature Cards */}
