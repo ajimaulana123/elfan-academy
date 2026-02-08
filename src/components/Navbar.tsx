@@ -19,7 +19,7 @@ const navLinks: NavLinkItem[] = [
   { name: "Visi Misi", href: "/#tentang", isRoute: false },
   { name: "Tujuan", href: "/tujuan", isRoute: true },
   { name: "Program", href: "/#program", isRoute: false },
-  { name: "Kontak", href: "/kontak", isRoute: true, homeSection: "kontak" },
+  { name: "Kontak", href: "/kontak", isRoute: true },
 ];
 
 function scrollToSectionId(sectionId: string, offset = 80) {
