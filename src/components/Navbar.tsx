@@ -75,38 +75,51 @@ const Navbar = () => {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: NavLinkItem) => {
     e.preventDefault();
+    
+    // Close mobile menu first
+    const wasMobileMenuOpen = isMobileMenuOpen;
     setIsMobileMenuOpen(false);
 
-    // Special case: link has homeSection and we're on home page -> scroll to section
-    if (link.homeSection && location.pathname === "/") {
-      scrollToSectionId(link.homeSection);
-      return;
-    }
+    // Helper to perform the actual navigation/scroll
+    const performNavigation = () => {
+      // Special case: link has homeSection and we're on home page -> scroll to section
+      if (link.homeSection && location.pathname === "/") {
+        scrollToSectionId(link.homeSection);
+        return;
+      }
 
-    if (link.isRoute) {
-      navigate(link.href);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
+      if (link.isRoute) {
+        navigate(link.href);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
 
-    const hash = link.href.split("#")[1];
-    if (!hash) return;
+      const hash = link.href.split("#")[1];
+      if (!hash) return;
 
-    if (location.pathname !== "/") {
-      navigate("/");
+      if (location.pathname !== "/") {
+        navigate("/");
 
-      // tunggu sampai home render, lalu scroll
-      const start = performance.now();
-      const tryScroll = () => {
-        if (scrollToSectionId(hash)) return;
-        if (performance.now() - start > 2000) return;
+        // tunggu sampai home render, lalu scroll
+        const start = performance.now();
+        const tryScroll = () => {
+          if (scrollToSectionId(hash)) return;
+          if (performance.now() - start > 2000) return;
+          requestAnimationFrame(tryScroll);
+        };
         requestAnimationFrame(tryScroll);
-      };
-      requestAnimationFrame(tryScroll);
-      return;
-    }
+        return;
+      }
 
-    scrollToSectionId(hash);
+      scrollToSectionId(hash);
+    };
+
+    // If mobile menu was open, wait for it to close before navigating
+    if (wasMobileMenuOpen) {
+      setTimeout(performNavigation, 100);
+    } else {
+      performNavigation();
+    }
   };
 
   const isActive = (link: NavLinkItem) => {
