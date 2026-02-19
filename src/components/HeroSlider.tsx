@@ -2,7 +2,7 @@
  import { motion, AnimatePresence } from "framer-motion";
  import { Button } from "@/components/ui/button";
  import { ChevronLeft, ChevronRight } from "lucide-react";
- import hero1 from "@/assets/hero-1.jpg";
+ import hero1 from "@/assets/hero-elfan.png";
  import hero2 from "@/assets/hero-2.jpg";
  
  const slides = [
