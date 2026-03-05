@@ -61,11 +61,10 @@
                    style={{ backgroundImage: `url(${slide.image})` }}
                  />
                  
-                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-dark/90 via-primary/80 to-primary/60" />
-                 
-                 {/* Islamic Pattern Overlay */}
-                 <div className="absolute inset-0 islamic-pattern-light opacity-30" />
+                 {/* Gradient Overlay - Only for slide id 1 */}
+                 {slide.id === 2 && (
+                   <div className="absolute inset-0 bg-gradient-to-r from-blue-dark/90 via-primary/60 to-primary/40" />
+                 )}
                </motion.div>
              )
          )}
